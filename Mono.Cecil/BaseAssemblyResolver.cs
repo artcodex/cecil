@@ -140,6 +140,11 @@ namespace Mono.Cecil {
 
 		public virtual AssemblyDefinition Resolve (AssemblyNameReference name, ReaderParameters parameters)
 		{
+            //TODO: Fix hack For WinMD lookup in Mono.Cecil
+            AddSearchDirectory(@"C:\Program Files (x86)\Windows Kits\8.0\References\CommonConfiguration\Neutral\");
+            AddSearchDirectory(@"C:\Program Files (x86)\Windows Kits\8.1\References\CommonConfiguration\Neutral\");
+            AddSearchDirectory(@"C:\Program Files (x86)\Windows Phone Kits\8.1\References\CommonConfiguration\Neutral\");
+
 			if (name == null)
 				throw new ArgumentNullException ("name");
 			if (parameters == null)
@@ -191,7 +196,7 @@ namespace Mono.Cecil {
 
 		AssemblyDefinition SearchDirectory (AssemblyNameReference name, IEnumerable<string> directories, ReaderParameters parameters)
 		{
-			var extensions = new [] { ".exe", ".dll" };
+			var extensions = new [] { ".exe", ".dll", ".winmd" };
 			foreach (var directory in directories) {
 				foreach (var extension in extensions) {
 					string file = Path.Combine (directory, name.Name + extension);
